@@ -1,0 +1,281 @@
+---
+title: "Pràctica de visualització de dades: PART 1"
+author: "Aïda Piñol Noguero"
+date: "25/5/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+<div>
+<p style = 'text-align:center;'>
+<img src="https://media.revistagq.com/photos/613b4f4feafd6051389c28c7/master/pass/oreo%20pokemon.jpeg" alt="JuveYell" width="500px">
+</p>
+</div>
+
+<br />
+
+## **1. Selecció del conjunt de dades:**
+
+### a. Objectiu:
+
+L'objectiu d'aquesta selecció és posar en pràctica els coneixements treballats al llarg de l'assignatura, per tal de crear una visualització que integri diferents elements de forma coherent, d'acord al tipus de dades i a les seves característiques.
+
+### b. Fonts de dades:
+
+El joc de dades utilitzat és el dataset “Complete Pokemon Dataset (Updated 16.04.21)”, descarregat de Kaggle.
+
+### c. Preparació:
+
+Carreguem el fitxer de dades.
+
+```{r}
+pokemon <- read.csv('pokedex.csv',stringsAsFactors = FALSE)
+```
+
+Procedim a visualitzar l'estructura i resum del joc de dades principal.
+
+```{r}
+str(pokemon)
+```
+S'obtenen 1045 observacions i 51 variables.
+
+```{r}
+summary(pokemon)
+```
+
+Així doncs, en l'apartat 2, intentarem reduir la grandària d'aquesta mostra i seleccionarem només les variables objecte d'interès per tal de donar resposta al nostre objectiu d'anàlisi, és a dir, a les preguntes que intentarem respondre i que definirem a continuació.
+
+
+### d. Exemples i propostes:
+
+Dades que poden generar visualitzacions interessants:
+
+En termes generals, es buscarà analitzar les característiques més definitòries dels pokémons, buscant relacions entre es diferents tipologies d'aquests. Així doncs, la visualització adoptarà un caràcter descriptiu i comparatiu entre les classes de pokémons.
+
+Possibles propostes: 
+
+- Relació de tipus de pokémon i pes/ alçada.
+
+- Relació entre tipus i atac/defensa/velocitat...
+
+- Relació entre l'avantatge que presenten sobre altres tipologies.
+
+<br />
+
+
+## **2. Creació de la visualització:**
+
+### a. Plantejament de preguntes:
+- ***A qui va dirigida la visualització?***
+
+Al tractar-se d'una visualització de caràcter didàctic, ja que l'objectiu és posar en pràctica diferents tipus de gràfiques i eines de visualització, no té un target específic, tot i que sí que és veritat que aquesta resultarà més interessant si es tenen coneixements previs del joc de rol.
+
+- ***Què vull respondre amb la visualització?***
+
+Es busca un anàlisis descriptiu dels trets més característics i definitoris dels pokémons. Per tant, les preguntes seran del tipus: 
+Quants tipus de Pokémon hi ha? Quines habilitats s’associen a cada espècie? Quines diferencies de pes i alçada existeixen? Quina relació hi ha entre els Pokémon llegendaris i les estadístiques base?, etc.
+
+- ***El dataset em permet contestar-les amb precisió?***
+
+Si, ja que aquest és idoni al comptar amb un tamany més que suficient.
+
+- ***Quines dades concretes del meu conjunt de dades vull explorar?***
+
+S'exploraran les variables:
+
+is_legendary: indica si el Pokémon és llegendari
+
+is_mythical: indica si el Pokémon és mític
+
+species: la categoria dels Pokémon
+
+type_1: el tipus principal del Pokémon
+
+height_m: alçada del Pokémon en metres
+
+weight_kg: el pes del Pokémon en kilograms
+
+abilities_number: el nombre d'habilitats del Pokémon
+
+total_points: nombre total de punts base
+
+hp: l'HP base del Pokémon
+
+attack: l'atac base del Pokémon
+
+defense: la defensa base del Pokémon
+
+sp_attack: l'atac especial bàsic del Pokémon
+
+sp_defense: la defensa especial base del Pokémon
+
+speed: la velocitat base del Pokémon
+
+catch_rate: taxa de captura del Pokémon
+
+base_friendship: l'amistat base del Pokémon
+
+base_experience: l'experiència bàsica d'un Pokémon salvatge quan és atrapat
+
+growth_rate: la taxa de creixement del Pokémon
+
+percentage_male: el percentatge de les espècies que són mascles
+
+egg_cycles: el nombre de cicles (255-257 passos) necessaris per eclosionar un ou
+
+against_normal: multiplicador que s'aplica quan el dany prové d'un Pokémon normal
+
+against_fire: multiplicador que s'aplica quan el dany prové d'un Pokémon tipus foc
+
+against_water: multiplicador que s'aplica quan el dany prové d'un Pokémon tipus aigua
+
+against_electric: multiplicador que s'aplica quan el dany prové d'un Pokémon elèctric
+
+against_grass: multiplicador que s'aplica quan el dany prové d'un Pokémon tipus herba
+
+against_ice: multiplicador que s'aplica quan el dany prové d'un Pokémon tipus gel
+
+against_fight: multiplicador que s'aplica quan el dany prové d'un Pokémon tipus lluita
+
+against_poison: multiplicador que s'aplica quan el dany prové d'un Pokémon tipus verí
+
+against_ground: multiplicador que s'aplica quan el dany prové d'un Pokémon tipus terra
+
+against_flying: multiplicador que s'aplica quan el dany prové d'un Pokémon volador
+
+against_psychic: multiplicador que s'aplica quan el dany prové d'un Pokémon psíquic
+
+against_bug: multiplicador que s'aplica quan el dany prové d'un Pokémon tipus insecte
+
+against_rock: multiplicador que s'aplica quan el dany prové d'un Pokémon tipus roca
+
+against_gosth: multiplicador que s'aplica quan el dany prové d'un Pokémon fantasma
+
+against_dragon: multiplicador que s'aplica quan el dany prové d'un Pokémon tipus drac
+
+against_dark: multiplicador que s'aplica quan el dany prové d'un Pokémon tipus fosc
+
+against_steel: multiplicador que s'aplica quan el dany prové d'un Pokémon tipus acer
+
+against_fairy: multiplicador que s'aplica quan el dany prové d'un Pokémon tipus fada
+
+
+<br />
+
+
+- ***Necessito més fonts de dades per donar context al meu conjunt de dades?***
+
+Tot i que amb les diferents variables del dataset podem contestar a les preguntes principals, finalment s'ha requerit una informació addicional, provinent de la pàgina web https://pokemon.fandom.com/es/wiki/Gimnasio_Pok%C3%A9mon_de_Ciudad_Plateada. 
+
+<br />
+
+### b. Exploració de les dades:
+
+**Tasca de neteja o condicionant**
+
+En primer lloc, buquem els valors nuls i els valors buits:
+
+**Estadístiques de valors nuls.**
+```{r message= FALSE, warning=FALSE}
+colSums(is.na(pokemon))
+```
+**Estadístiques de valors buits.**
+```{r message= FALSE, warning=FALSE}
+colSums(pokemon=="")
+```
+
+Assignem el valor "NA" als valors buits del dataset:
+
+```{r message= FALSE, warning=FALSE}
+pokemon[pokemon == ""]<- NA
+```
+
+
+Obtenim el % de valors nuls per columnes:
+
+```{r message= FALSE, warning=FALSE}
+colMeans(is.na(pokemon))
+```
+
+Fem una neteja de les variables, establint que el nostre límit tolerable de nuls és del 15%.
+
+Visualitzem les columnes amb els valors NULS més grans o iguals al 15%:
+
+```{r message= FALSE, warning=FALSE}
+cols_borrar <- which(colMeans(is.na(pokemon)) >= 0.15)
+cols_borrar
+```
+
+Eliminem directament aquestes columnes, per tal de que no ens afectin a la qualitat de les dades utilitzades en les visualitzacions (observem que només ens afectaria la columna percentage_male, ja que les altres no les havíem contemplat per a l'anàlisi posterior).
+
+```{r message= FALSE, warning=FALSE}
+pokemon <- pokemon[,-which(colMeans(is.na(pokemon)) >= 0.20)]
+```
+
+
+<br />
+
+## Anàlisi exploratòria:
+**Anàlisi de variables categòriques (tipus de Pokémon):**
+
+- Tipus primari (type_1): 
+
+```{r}
+# Obtenim els diferents tipus primaris en que es classifiquen els Pokémon:
+unique(pokemon$type_1)
+length(unique(pokemon$type_1))
+```
+
+Obtenim 18 tipus diferents de pokémons.
+Aquesta serà la variable objecte d'estudi principal, ja que ens servirà per buscar relacions amb altres variables per treballar diferents tipus de visualitzacions.
+
+
+
+### c. Disseny: com representar les dades
+
+ 
+```{r}
+# Exemple de visualització:
+barplot(table(pokemon$type_1),main="Tipus de Pokémon",ylab="Freqüència",xlab="Tipus",las=2)
+```
+ 
+ 
+Segons el tipus de variables utilitzades (si són categòriques, numèriques o booleanes) generarem un tipus de visualització o un altre. Per a fer-ho, utilitzarem diferents eines com Flourish o Infogram.
+
+Un element que vull incloure és una visualització que representa l'avantatge que presenta un tipus de Pokémon sobre un altre, inspirat en el diagrama següent, pubicat a reddit per l'usuari u/r_noob:
+
+
+<br />
+
+<div>
+<p style = 'text-align:center;'>
+<img src="https://flourish.studio/images/blog/pogo-original-dominance-diagram.png" width="500px">
+</p>
+</div>
+
+
+
+<br />
+
+
+
+Finalment, s'han emprat diagrames de barres, diagrama de barres apilades, diagrama de cordes i de jerarquía, gràfic de radar i gràfics de dispersió.
+
+
+
+
+
+### d. El procés de visualització
+
+En aquesta darrera pràctica, el meu projecte adoptarà la forma DE PRESENTACIÓ, per tant, la lectura serà horitzontal i integrarà els diferents elements generats amb diverses eines treballades al llarg de l'assignatura. 
+
+
+
+
+
+
+
